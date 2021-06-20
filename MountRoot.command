@@ -109,7 +109,7 @@ class PatchSysVolume:
         os.system("cls" if os.name == "nt" else "clear")
 
 
-    def get_nvram(variable: str, uuid: str = None, *, decode: bool = False):
+    def get_nvram(self, variable: str, uuid: str = None, *, decode: bool = False):
         if uuid is not None:
             uuid += ":"
         else:
@@ -210,7 +210,7 @@ class PatchSysVolume:
             print("\nCannot patch! Please disable FileVault.")
             print("Go to System Preferences -> Security and disable FileVault")
 
-        if any([self.sip_enabled, self.sbm_enabled, self.fv_enabled]):
+        if self.sip_enabled is True or self.sbm_enabled is True or self.fv_enabled is True:
             return False
         else:
             return True
@@ -218,11 +218,14 @@ class PatchSysVolume:
     # Entry Function
     def start_patch(self):
         print("- Starting Patch Process")
-        self.find_mount_root_vol(True)
+        if self.verify_patch_allowed() is True:
+            print("- Found Root Volume can be mounted, continuing")
+            self.find_mount_root_vol(True)
 
     def start_unpatch(self):
         print("- Starting Unpatch Process")
         if self.verify_patch_allowed() is True:
+            print("- Found Root Volume can be mounted, continuing")
             self.find_mount_root_vol(False)
             input("\nPress [ENTER] to return to the main menu")
 
