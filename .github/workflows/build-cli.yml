@@ -12,6 +12,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - run: pip3 install pyinstaller
       - run: pyinstaller MountRoot.spec
       - run: cd dist; zip ../MountRoot.zip MountRoot
       - name: Upload Binary to Artifacts
